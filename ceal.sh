@@ -13,40 +13,40 @@ release="2.4.0 Interactive"
     substitute=1 #Give detailed command line with all variables already substituted, if it is 0 - show "command $with $variables"
     timeout=0  #When error occurred, wait N seconds and try again. Set this to 0 if you don't want script to repeat automatically: it will wait for your input
 
-    hostname=ewanpc #Hostname of the PC
-    timezone=Europe/Minsk #Your timezone in /usr/share/zoneinfo
-    locale=( en_US.UTF-8 ru_RU.UTF-8 ) #Locales which you need. System locale will be the first
-    mirror=( Belarus Denmark Russia United France ) #List of repository countries in the order of importance
+    hostname=arch_ewan #Hostname of the PC
+    timezone=Europe/Amsterdam #Your timezone in /usr/share/zoneinfo
+    locale=( en_US.UTF-8 ) #Locales which you need. System locale will be the first
+    mirror=( Netherlands United States) #List of repository countries in the order of importance
     #font=cyr-sun16 #Console font [I don't need it]
 
 #Internet configuration
-    network=0 #1 - netctl, 2 - dhcpcd, 0 - do NOT setup
+    network=2 #1 - netctl, 2 - dhcpcd, 0 - do NOT setup
     profile=ethernet-static #netctl profile in /etc/netctl/examples
-    interface=enp5s0 #Network interface [see ip link]
-    ip=192.168.100.22 #Static IP address
+    interface=enp2s0 #Network interface [see ip link]
+    ip=192.168.100.21 #Static IP address
     dns=192.168.100.1 #DNS to use (usually, your router address)
     essid=TTT #Name of access point for wireless connection
     key=192837465 #Key for wireless connection
 
 #Devices: place them in the order of mounting ('/' goes before '/home'), no slash in the end ('/home', not '/home/')
-    description=( Root Home Backup Cloud ) #Just text info which will display during install
-    device=( /dev/archlinux/root /dev/archlinux/home /dev/archlinux/backup /dev/archlinux/cloud ) #Devices which is to mount to corresponding mount points
-    mount=( / /home /mnt/backup /mnt/cloud ) #Mount points starting from '/'
-    type=( ext4 ext4 ext4 ext4 ) #Filesystem
-    option=( rw,relatime,discard rw,relatime,discard rw,relatime rw,relatime,discard ) #Options (discard works only for SSD)
-    dump=( 0 0 0 0 ) #Make backup if 1 provided (usually 0)
-    pass=( 1 2 2 2 ) #Used by fsck to check partitions in order (usually root = 1, other = 2)
+    description=( Root ) #Just text info which will display during install
+    device=( /dev/archlinux/root ) #Devices which is to mount to corresponding mount points
+    mount=( / ) #Mount points starting from '/'
+    type=( ext4 ) #Filesystem
+    option=( rw,relatime ) #Options (discard works only for SSD)
+    dump=( 0  ) #Make backup if 1 provided (usually 0)
+    pass=( 1 ) #Used by fsck to check partitions in order (usually root = 1, other = 2)
 
 #Additional devices
-    mbr=/dev/sdb #Grub MBR device (where to install bootloader)
+    mbr=/dev/sda #Grub MBR device (where to install bootloader)
     #windows=/dev/sdb1 #Copy fonts from windows system partition (C:\Windows\Fonts)
     #temp=/dev/sda10 #If you are installing from host-system ($hostinstall=1) and you have less than 1G free on '/', you will need additional partition to extract ROOT filesystem image
 
 #Users
-    user=ewancoder #User login. Could be more than 1 like this: user=( ewancoder seconduser )
-    shell=/bin/zsh #Default shell
+    user=boban #User login. Could be more than 1 like this: user=( ewancoder seconduser )
+    shell=/bin/bash #Default shell
     #Each 'groups' entry is for separate user, the groups itself divided by comma (','). Group 'user' added to all users automatically (there's no need to include it here)
-    group=fuse,uucp #Add user in these groups, separate by comma (,)
+    group=fuse,uucp,wheel #Add user in these groups, separate by comma (,)
     main=${user[0]} #Main user of the system: used later as reference. I am setting it as 'ewancoder'
     sudoers="$main ALL=(ALL) NOPASSWD: /usr/bin/pacman" #Sudoers additional entries
     userscript=( ewancoder_script.sh ) #Script to execute as user after install
@@ -55,13 +55,13 @@ release="2.4.0 Interactive"
     gitname=$main #Git user name
     gitemail=$main@gmail.com #Git email
     gittool=vimdiff #Tool to use as diff
-    giteditor="vim" #Default editor
+    giteditor="nano" #Default editor
 
     gitrepo=( $main/dotfiles $main/etc ) #All these repos will be cloned from github to corresponding folders
     gitfolder=( /home/$main/.dotfiles /etc/.dotfiles ) #Set corresponding folders without '/' at the end
     gitrule=( $main:users '' ) #CHOWN rule for whole folder content ('root' as default)
     gitbranch=( '' '' ) #Branch to checkout
-    gitmodule=( ".oh-my-zsh .vim/bundle/vundle" ) #Sumbodules to pull (remove if you don't need any)
+    gitmodule=( "" ) #Sumbodules to pull (remove if you don't need any)
     gitlink=( /home/$main /etc ) #Where to link ALL content from the repo [DOTFILES automation]
 
 #Execute commands after install
@@ -84,7 +84,7 @@ release="2.4.0 Interactive"
         Tools
     )
     #Essential AUR software, installed before system boot
-    buildbefore=( canto-next-git compton cv dmenu2 dropbox dunst-git gtk-theme-espresso gcalcli gxkb slimlock-git slim-archlinux-solarized-spiral wmii-hg )
+    buildbefore=( canto-next-git compton cv dmenu2 dunst-git gtk-theme-espresso gcalcli gxkb slimlock-git slim-archlinux-solarized-spiral wmii-hg )
     #Long-builded AUR software, installed after system boot
     buildafter=( canto-curses-git chromium-pepper-flash hyphen-ru hunspell-ru jmtpfs latex-beamer latex-pscyr pencil popcorntime-bin python-pygame-hg syncplay pasystray-git )
     term="urxvt -e" #Terminal to install $buildafter software within
